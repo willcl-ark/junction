@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
     QDateTimeEdit,
     QDial,
     QDialog,
+    QFormLayout,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
@@ -42,8 +43,8 @@ class Junction(QDialog):
         super(Junction, self).__init__(parent)
 
         self.originalPalette = QApplication.palette()
-        self.createRPCSettingsGroupBox()
-        self.createWalletGroupBox()
+        self.createWalletForm()
+        self.createRPCSettingsForm()
         self.createMainTabWidget()
 
         mainLayout = QGridLayout()
@@ -60,80 +61,39 @@ class Junction(QDialog):
 
     def createMainTabWidget(self):
         self.mainTabWidget = QTabWidget()
-        self.mainTabWidget.setSizePolicy(QSizePolicy.Preferred,
-                                         QSizePolicy.Ignored)
+        self.mainTabWidget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Ignored)
 
-        tab1 = self.RPCSettingsGroupBox
-        tab2 = self.WalletGroupBox
-        self.mainTabWidget.addTab(tab1, "&RPC Settings")
+        tab1 = self.RPCSettingsForm
+        tab2 = self.WalletForm
+        self.mainTabWidget.addTab(tab1, "RPC Settings")
         self.mainTabWidget.addTab(tab2, "Create Wallet")
 
-    def createRPCSettingsGroupBox(self):
-        self.RPCSettingsGroupBox = QGroupBox()
+    def createRPCSettingsForm(self):
+        self.RPCSettingsForm = QGroupBox("Configure testnet RPC parameters")
+        pw = QLineEdit()
+        pw.setEchoMode(QLineEdit.Password)
+        host = QLineEdit()
+        host.setText("127.0.0.1")
+        port = QLineEdit()
+        port.setText("18332")
+        layout = QFormLayout()
+        layout.addRow(QLabel("RPC Username:"), QLineEdit())
+        layout.addRow(QLabel("RPC Password:"), pw)
+        layout.addRow(QLabel("RPC Host:"), host)
+        layout.addRow(QLabel("RPC Port:"), port)
+        self.RPCSettingsForm.setLayout(layout)
 
-        RPCgroupLabel = QLabel("Configure testnet RPC parameters")
-
-
-        RPCUsername = QLineEdit()
-        RPCUsernameLabel = QLabel("&RPC Username:")
-        RPCUsernameLabel.setBuddy(RPCUsername)
-
-        RPCPassword = QLineEdit()
-        RPCPassword.setEchoMode(QLineEdit.Password)
-        RPCPasswordLabel = QLabel("&RPC Password:")
-        RPCPasswordLabel.setBuddy(RPCUsername)
-
-        RPCHost = QLineEdit()
-        RPCHost.setText("127.0.0.1")
-        RPCHostLabel = QLabel("&RPC Host:")
-        RPCHostLabel.setBuddy(RPCHost)
-
-        RPCPort = QLineEdit()
-        RPCPortLabel = QLabel("&RPC Port:")
-        RPCPort.setText("18332")
-        RPCPortLabel.setBuddy(RPCPort)
-
-        layout = QGridLayout()
-        layout.addWidget(RPCgroupLabel,     0, 0, 1, 3)
-        layout.addWidget(RPCUsernameLabel,  1, 0)
-        layout.addWidget(RPCUsername,       1, 1, 1, 3)
-        layout.addWidget(RPCPasswordLabel,  2, 0)
-        layout.addWidget(RPCPassword,       2, 1, 1, 3)
-        layout.addWidget(RPCHostLabel,      3, 0)
-        layout.addWidget(RPCHost,           3, 1, 1, 3)
-        layout.addWidget(RPCPortLabel,      4, 0)
-        layout.addWidget(RPCPort,           4, 1, 1, 3)
-        self.RPCSettingsGroupBox.setLayout(layout)
-
-    def createWalletGroupBox(self):
-        self.WalletGroupBox = QGroupBox()
-
-        WalletgroupLabel = QLabel("Create a new multisig wallet")
-
-        WalletName = QLineEdit()
-        WalletNameLabel = QLabel("&Wallet name:")
-        WalletNameLabel.setBuddy(WalletName)
-
-        SignaturesReq = QLineEdit()
-        SignaturesReq.setText("2")
-        SignaturesReqLabel = QLabel("&Signatures Required:")
-        SignaturesReqLabel.setBuddy(SignaturesReq)
-
-        TotalSigners = QLineEdit()
-        TotalSigners.setText("3")
-        TotalSignersLabel = QLabel("&Total Signers:")
-        TotalSignersLabel.setBuddy(TotalSigners)
-
-
-        layout = QGridLayout()
-        layout.addWidget(WalletgroupLabel,      0, 0, 1, 3)
-        layout.addWidget(WalletNameLabel,       1, 0)
-        layout.addWidget(WalletName,            1, 1, 1, 3)
-        layout.addWidget(SignaturesReqLabel,    2, 0)
-        layout.addWidget(SignaturesReq,         2, 1, 1, 3)
-        layout.addWidget(TotalSignersLabel,     3, 0)
-        layout.addWidget(TotalSigners,          3, 1, 1, 3)
-        self.WalletGroupBox.setLayout(layout)
+    def createWalletForm(self):
+        self.WalletForm = QGroupBox("Create a new wallet")
+        sig_req = QLineEdit()
+        sig_req.setText("2")
+        total_sig = QLineEdit()
+        total_sig.setText("3")
+        layout = QFormLayout()
+        layout.addRow(QLabel("Wallet name:"), QLineEdit())
+        layout.addRow(QLabel("Signatures required:"), sig_req)
+        layout.addRow(QLabel("Total signers:"), total_sig)
+        self.WalletForm.setLayout(layout)
 
 
 if __name__ == "__main__":
