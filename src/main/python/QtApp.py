@@ -42,25 +42,12 @@ class Junction(QDialog):
         super(Junction, self).__init__(parent)
 
         self.originalPalette = QApplication.palette()
-
-        styleComboBox = QComboBox()
-        styleComboBox.addItems(wallet_list)
-
-        styleLabel = QLabel("&Device:")
-        styleLabel.setBuddy(styleComboBox)
-
         self.createRPCSettingsGroupBox()
-        # self.createTopTabLayout()
-
-
-        topLayout = QHBoxLayout()
-        topLayout.addWidget(styleLabel)
-        topLayout.addWidget(styleComboBox)
-        topLayout.addStretch(1)
+        self.createWalletGroupBox()
+        self.createMainTabWidget()
 
         mainLayout = QGridLayout()
-        mainLayout.addLayout(topLayout, 0, 0, 1, 2)
-        mainLayout.addWidget(self.RPCSettingsGroupBox, 1, 0)
+        mainLayout.addWidget(self.mainTabWidget, 1, 0)
         mainLayout.setRowStretch(1, 2)
         mainLayout.setRowStretch(2, 2)
         mainLayout.setColumnStretch(0, 1)
@@ -71,85 +58,18 @@ class Junction(QDialog):
         QApplication.setStyle(QStyleFactory.create("Fusion"))
         QApplication.setPalette(QApplication.style().standardPalette())
 
-    def createTopTabLayout(self):
-        self.topTabLayout = QTabWidget()
-        self.topTabLayout.setSizePolicy(
-            QSizePolicy.Preferred, QSizePolicy.Ignored
-        )
+    def createMainTabWidget(self):
+        self.mainTabWidget = QTabWidget()
+        self.mainTabWidget.setSizePolicy(QSizePolicy.Preferred,
+                                         QSizePolicy.Ignored)
 
-        RPCSettings = QWidget()
-        tableWidget = QTableWidget(10, 10)
-
-        tab1hbox = QHBoxLayout()
-        tab1hbox.setContentsMargins(5, 5, 5, 5)
-        tab1hbox.addWidget(tableWidget)
-        tab1.setLayout(tab1hbox)
-
-        tab2 = QWidget()
-        textEdit = QTextEdit()
-
-        textEdit.setPlainText(
-            "Twinkle, twinkle, little star,\n"
-            "How I wonder what you are.\n"
-            "Up above the world so high,\n"
-            "Like a diamond in the sky.\n"
-            "Twinkle, twinkle, little star,\n"
-            "How I wonder what you are!\n"
-        )
-
-        tab2hbox = QHBoxLayout()
-        tab2hbox.setContentsMargins(5, 5, 5, 5)
-        tab2hbox.addWidget(textEdit)
-        tab2.setLayout(tab2hbox)
-
-        self.topTabLayout.addTab(tab1, "&RPC Settings")
-        self.topTabLayout.addTab(tab2, "Text &Edit")
-
-
-    # def createTopLeftGroupBox(self):
-    #     self.topLeftGroupBox = QGroupBox("Group 1")
-    #
-    #     radioButton1 = QRadioButton("Radio button 1")
-    #     radioButton2 = QRadioButton("Radio button 2")
-    #     radioButton3 = QRadioButton("Radio button 3")
-    #     radioButton1.setChecked(True)
-    #
-    #     checkBox = QCheckBox("Tri-state check box")
-    #     checkBox.setTristate(True)
-    #     checkBox.setCheckState(Qt.PartiallyChecked)
-    #
-    #     layout = QVBoxLayout()
-    #     layout.addWidget(radioButton1)
-    #     layout.addWidget(radioButton2)
-    #     layout.addWidget(radioButton3)
-    #     layout.addWidget(checkBox)
-    #     layout.addStretch(1)
-    #     self.topLeftGroupBox.setLayout(layout)
-
-    # def createTopRightGroupBox(self):
-    #     self.topRightGroupBox = QGroupBox("Group 2")
-    #
-    #     defaultPushButton = QPushButton("Default Push Button")
-    #     defaultPushButton.setDefault(True)
-    #
-    #     togglePushButton = QPushButton("Toggle Push Button")
-    #     togglePushButton.setCheckable(True)
-    #     togglePushButton.setChecked(True)
-    #
-    #     flatPushButton = QPushButton("Flat Push Button")
-    #     flatPushButton.setFlat(True)
-    #
-    #     layout = QVBoxLayout()
-    #     layout.addWidget(defaultPushButton)
-    #     layout.addWidget(togglePushButton)
-    #     layout.addWidget(flatPushButton)
-    #     layout.addStretch(1)
-    #     self.topRightGroupBox.setLayout(layout)
-
-
+        tab1 = self.RPCSettingsGroupBox
+        tab2 = self.WalletGroupBox
+        self.mainTabWidget.addTab(tab1, "&RPC Settings")
+        self.mainTabWidget.addTab(tab2, "Create Wallet")
 
     def createRPCSettingsGroupBox(self):
-        self.RPCSettingsGroupBox = QGroupBox("RPC Settings")
+        self.RPCSettingsGroupBox = QGroupBox()
 
         RPCgroupLabel = QLabel("Configure testnet RPC parameters")
 
@@ -184,6 +104,36 @@ class Junction(QDialog):
         layout.addWidget(RPCPortLabel,      4, 0)
         layout.addWidget(RPCPort,           4, 1, 1, 3)
         self.RPCSettingsGroupBox.setLayout(layout)
+
+    def createWalletGroupBox(self):
+        self.WalletGroupBox = QGroupBox()
+
+        WalletgroupLabel = QLabel("Create a new multisig wallet")
+
+        WalletName = QLineEdit()
+        WalletNameLabel = QLabel("&Wallet name:")
+        WalletNameLabel.setBuddy(WalletName)
+
+        SignaturesReq = QLineEdit()
+        SignaturesReq.setText("2")
+        SignaturesReqLabel = QLabel("&Signatures Required:")
+        SignaturesReqLabel.setBuddy(SignaturesReq)
+
+        TotalSigners = QLineEdit()
+        TotalSigners.setText("3")
+        TotalSignersLabel = QLabel("&Total Signers:")
+        TotalSignersLabel.setBuddy(TotalSigners)
+
+
+        layout = QGridLayout()
+        layout.addWidget(WalletgroupLabel,      0, 0, 1, 3)
+        layout.addWidget(WalletNameLabel,       1, 0)
+        layout.addWidget(WalletName,            1, 1, 1, 3)
+        layout.addWidget(SignaturesReqLabel,    2, 0)
+        layout.addWidget(SignaturesReq,         2, 1, 1, 3)
+        layout.addWidget(TotalSignersLabel,     3, 0)
+        layout.addWidget(TotalSigners,          3, 1, 1, 3)
+        self.WalletGroupBox.setLayout(layout)
 
 
 if __name__ == "__main__":
