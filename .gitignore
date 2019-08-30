@@ -125,4 +125,4 @@ dmypy.json
 
 # Junction
 wallets/
-settings.json
+src/main/settings/settings.json
