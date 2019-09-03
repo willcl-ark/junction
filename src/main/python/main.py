@@ -1,38 +1,27 @@
-import json
 import sys
-from collections import OrderedDict
-from pathlib import Path
 
+from PyQt5.QtWidgets import QDialogButtonBox, QMainWindow
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
-from PyQt5.QtWidgets import QMainWindow, QDialogButtonBox, QStatusBar
 
 from junction import Ui_Junction
-from utils import test_rpc
+from utils import *
 
-
-here = Path(__file__).parent
-python_src_dir = Path(here).parent
+# globals
+wallet_name = get_first_wallet_name()
 
 
 class MainWindow(QMainWindow, Ui_Junction):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
+        make_junction_dir()
         self.RPCSettingsDialog.button(QDialogButtonBox.Save).clicked.connect(
             lambda: self.update_settings()
         )
         self.update_rpc_display()
 
     def update_rpc_display(self):
-        self.currentRPCSettingsTextBrowser.setPlainText(self.read_rpc_settings())
-
-    def read_rpc_settings(self):
-        with open(python_src_dir / "settings/settings.json") as settings:
-            set_d = json.load(settings, object_pairs_hook=OrderedDict)
-            set_str = ""
-            for k, v in set_d.items():
-                set_str += f"{k}: {v}\n"
-            return set_str
+        self.currentRPCSettingsTextBrowser.setPlainText(get_settings_as_str())
 
     def update_settings(self):
         with open(python_src_dir / "settings/settings.json") as settings:
@@ -48,7 +37,7 @@ class MainWindow(QMainWindow, Ui_Junction):
             self.statusBar.showMessage("Settings validated and updated")
         else:
             self.statusBar.showMessage(
-                "Settings invalid and not saved -- make sure bitcoind is running"
+                "!! settings not accepted by bitcoind and not saved !!"
             )
 
 
