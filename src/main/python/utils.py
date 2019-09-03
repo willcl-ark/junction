@@ -8,7 +8,6 @@ from pathlib import Path
 from shutil import copyfile
 
 from bitcoinrpc.authproxy import AuthServiceProxy
-from flask import flash
 from hwilib import commands
 from hwilib.devices import coldcard, ledger, trezor
 
@@ -103,12 +102,12 @@ def get_settings_as_str():
 ### Flask
 
 
-def flash_success(msg):
-    flash(msg, "success")
-
-
-def flash_error(msg):
-    flash(msg, "danger")
+# def flash_success(msg):
+#     flash(msg, "success")
+#
+#
+# def flash_error(msg):
+#     flash(msg, "danger")
 
 
 ###  Currency conversions

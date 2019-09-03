@@ -1,4 +1,8 @@
-hwi
-flask
-python-bitcoinrpc
 ckcc-protocol
+click
+fbs
+hwi
+PyInstaller
+PyQt5
+PyQt5-stubs
+python-bitcoinrpc

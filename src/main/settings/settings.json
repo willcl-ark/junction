@@ -1,5 +1,5 @@
 {
-    "rpc_username": "user",
+    "rpc_username": "invalid",
     "rpc_password": "password",
     "rpc_host": "127.0.0.1",
     "rpc_port": "18332",
