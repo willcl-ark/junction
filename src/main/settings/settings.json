@@ -1,6 +1,6 @@
 {
-    "rpc_username": "this surely",
-    "rpc_password": "works",
+    "rpc_username": "user",
+    "rpc_password": "password",
     "rpc_host": "127.0.0.1",
     "rpc_port": "18332",
     "address_chunk": 100
